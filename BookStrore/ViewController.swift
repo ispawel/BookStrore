@@ -30,8 +30,7 @@ class ViewController: UIViewController {
         static let valueForISBN = "0861661419"
         
         static let countRating = 9.3
-        static let discriptionAutors = "Alan moore (Watchmen) and Eddie Campbell (Bacchus), grandmasters of the comics medium, present a book often ranked staticamong the greatest graphic novels of all time: From Hell."
-        static let discriptionBook = "Two master storytellers. Eleven unsolved murders. A hundread years of mystery. One sprawling conspirancy, one staticmetropolis on the brink og the twentieth London into the moern age of terror, and one comics masterpiece. From hell is now abailable in statica handsome hardcover edition, with a brand new cover."
+        static let discriptionText = "Alan moore (Watchmen) and Eddie Campbell (Bacchus), grandmasters of the comics medium, present a book often ranked among the greatest graphic novels of all time: From Hell.\n\nTwo master storytellers. Eleven unsolved murders. A hundread years of mystery. One sprawling conspirancy, one metropolis on the brink of the twentieth century, onebloody-minded Ripper ushering London into the moern age of terror, and one comics masterpiece. From hell is now abailable in statica handsome hardcover edition, with a brand new cover."
         static let photo1Reviews = UIImage(named: "avatar1")
         static let name1Reviews = "Dan Risch"
         static let dataComment1Reviews = "10 May 2022"
@@ -48,7 +47,18 @@ class ViewController: UIViewController {
         static let countImagesReviews2 = 3
     }
     private var contentSizeScroll: CGSize {
-        CGSize(width: view.frame.width, height: view.frame.height + 700)
+        CGSize(width: view.frame.width, height: view.frame.height + 750)
+    }
+    
+    func formattingBodyText(){
+        let attributedString = NSMutableAttributedString(string: Constants.discriptionText)
+        attributedString.addAttribute(.foregroundColor, value: UIColor.gray, range: NSRange(location: 0, length: attributedString.length))
+        attributedString.addAttribute(.font, value: UIFont.systemFont(ofSize: 16), range: NSRange(location: 0, length: attributedString.length))
+        attributedString.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: 16), range: NSRange(location: 0, length: 10))        //Alan moore = boldSystemFont
+        attributedString.addAttribute(.font, value: UIFont.italicSystemFont(ofSize: 16), range: NSRange(location: 11, length: 10))     //(Watchmen) = italicSystemFont
+        attributedString.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: 16), range: NSRange(location: 26, length: 14))       //Eddie Campbell = boldSystemFont
+        attributedString.addAttribute(.font, value: UIFont.italicSystemFont(ofSize: 16), range: NSRange(location: 41, length: 8))      //(Bacchus) = italicSystemFont
+        textDiscription.attributedText = attributedString
     }
     
     private lazy var scrollForContentView: UIScrollView = {
@@ -63,6 +73,14 @@ class ViewController: UIViewController {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.contentMode = .scaleAspectFit
         $0.image = UIImage(named: "from_hell")
+        $0.layer.cornerRadius = 10
+       // $0.clipsToBounds = true
+        $0.center = self.view.center
+        $0.backgroundColor = UIColor.white
+        $0.layer.shadowColor = UIColor.black.cgColor
+        $0.layer.shadowOpacity = 0.4
+        $0.layer.shadowOffset = CGSize(width: 8, height: 8)
+        $0.layer.shadowRadius = 6
         return $0
     }(UIImageView())
     
@@ -138,9 +156,7 @@ class ViewController: UIViewController {
     
     private lazy var textDiscription: UITextView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.text = "\(Constants.discriptionAutors)\n\n\(Constants.discriptionBook)"
-        $0.textColor = .gray
-        $0.font = UIFont.systemFont(ofSize: 15)
+        $0.text = "\(Constants.discriptionText)"
         $0.isEditable = false
         return $0
     }(UITextView())
@@ -470,6 +486,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         setupConstraints()
+        formattingBodyText()
     }
     
     private func setupUI(){
@@ -549,7 +566,7 @@ extension ViewController{
             
             photoBook.topAnchor.constraint(equalTo: scrollForContentView.topAnchor, constant: 30),
             photoBook.centerXAnchor.constraint(equalTo: scrollForContentView.centerXAnchor),
-            photoBook.widthAnchor.constraint(equalToConstant: 250),
+            photoBook.widthAnchor.constraint(equalToConstant: 188),
             photoBook.heightAnchor.constraint(equalToConstant: 250),
             
             bookTitle.topAnchor.constraint(equalTo: photoBook.bottomAnchor, constant: 35),
@@ -571,12 +588,12 @@ extension ViewController{
             numberRating.centerYAnchor.constraint(equalTo: viewForRating.centerYAnchor),
             numberRating.rightAnchor.constraint(equalTo: viewForRating.rightAnchor, constant: -12),
             
-            textDiscription.topAnchor.constraint(equalTo: viewForRating.bottomAnchor, constant: 20),
+            textDiscription.topAnchor.constraint(equalTo: viewForRating.bottomAnchor, constant: 30),
             textDiscription.leftAnchor.constraint(equalTo: scrollForContentView.safeAreaLayoutGuide.leftAnchor, constant: 20),
             textDiscription.rightAnchor.constraint(equalTo: scrollForContentView.safeAreaLayoutGuide.rightAnchor, constant: -20),
-            textDiscription.heightAnchor.constraint(equalToConstant: 240),
+            textDiscription.heightAnchor.constraint(equalToConstant: 270),
             
-            stackForStackImage.topAnchor.constraint(equalTo: textDiscription.bottomAnchor, constant: 40),
+            stackForStackImage.topAnchor.constraint(equalTo: textDiscription.bottomAnchor, constant: 30),
             stackForStackImage.leftAnchor.constraint(equalTo: scrollForContentView.safeAreaLayoutGuide.leftAnchor, constant: 20),
             stackForStackImage.rightAnchor.constraint(equalTo: scrollForContentView.safeAreaLayoutGuide.rightAnchor, constant: -20),
             stackForStackImage.heightAnchor.constraint(equalToConstant: scrollForContentView.frame.size.width/2.3),
